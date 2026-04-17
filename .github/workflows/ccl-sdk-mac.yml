@@ -1,0 +1,86 @@
+name: CCL SDK for Mac
+
+concurrency:
+  group: ccl-sdk-mac
+
+defaults:
+  run:
+    shell: bash
+
+on:
+  workflow_call:
+    inputs:
+      docartifact:
+        description: 'Documentation Artifact ID'
+        required: false
+        default: ''
+        type: string
+      androidartifact:
+        description: 'Android SDK Artifact ID'
+        required: false
+        default: ''
+        type: string
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - host: macos-15
+            targetos: mac
+
+    runs-on: ${{matrix.host}}
+
+    permissions:
+      contents: read
+      packages: read
+      actions: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Download documentation
+        if: inputs.docartifact != ''
+        uses: actions/download-artifact@v5
+        with:
+          artifact-ids: ${{ inputs.docartifact }}
+          path: ${{ github.workspace }}/.docs
+          merge-multiple: true
+
+      - name: Download Android SDK
+        if: inputs.androidartifact != ''
+        uses: actions/download-artifact@v5
+        with:
+          artifact-ids: ${{ inputs.androidartifact }}
+          path: ${{ github.workspace }}/.android
+          merge-multiple: true
+
+      - name: Run build script
+        uses: ./.github/ci/mac/execute-build-script
+        with:
+          script: build_sdk.sh
+          targetos: ${{ matrix.targetos }}
+        env:
+          APPLE_DEVELOPERID_CERTIFICATE_BASE64: ${{ secrets.APPLE_DEVELOPERID_CERTIFICATE_BASE64 }}
+          APPLE_DEVELOPERID_CERTIFICATE_P12_PASSWORD: ${{ secrets.APPLE_DEVELOPERID_CERTIFICATE_P12_PASSWORD }}
+          APPLE_DEVELOPMENT_CERTIFICATE_BASE64: ${{ secrets.APPLE_DEVELOPMENT_CERTIFICATE_BASE64 }}
+          APPLE_DEVELOPMENT_CERTIFICATE_P12_PASSWORD: ${{ secrets.APPLE_DEVELOPMENT_CERTIFICATE_P12_PASSWORD }}
+          APPLE_DISTRIBUTION_CERTIFICATE_BASE64: ${{ secrets.APPLE_DISTRIBUTION_CERTIFICATE_BASE64 }}
+          APPLE_DISTRIBUTION_CERTIFICATE_P12_PASSWORD: ${{ secrets.APPLE_DISTRIBUTION_CERTIFICATE_P12_PASSWORD }}
+          APPLE_KEYCHAIN_PASSWORD: ${{ secrets.APPLE_KEYCHAIN_PASSWORD }}
+          APPLE_API_KEY_BASE64: ${{ secrets.APPLE_API_KEY_BASE64 }}
+          APPLE_API_KEY_FILENAME: ${{ vars.APPLE_API_KEY_FILENAME }}
+          APPLE_API_KEYID: ${{ vars.APPLE_API_KEYID }}
+          APPLE_API_ISSUER: ${{ vars.APPLE_API_ISSUER }}
+          SIGNING_CERTIFICATE_MAC: ${{ vars.SIGNING_CERTIFICATE_MAC }}
+
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ccl-sdk-${{matrix.targetos}}
+          path: |
+            build/deployment/mac/*.*

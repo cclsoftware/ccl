@@ -1,0 +1,87 @@
+name: CCL Applications for Mac
+
+concurrency:
+  group: ccl-applications-mac
+
+defaults:
+  run:
+    shell: bash
+
+on: 
+  workflow_call:
+    inputs:
+      buildDemo:
+        description: 'Build CCL Demo'
+        type: boolean
+        required: true
+        default: true
+      buildLocalizer:
+        description: 'Build CCL Localizer'
+        type: boolean
+        required: true
+        default: true
+      buildSkinEditor:
+        description: 'Build CCL Skin Editor'
+        type: boolean
+        required: true
+        default: true
+
+jobs:
+  build:
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - host: macos-15
+            targetos: mac
+
+    runs-on: ${{matrix.host}}
+
+    steps:
+      - name: Compute CMake options
+        id: cmake_opts
+        run: |
+          opts=""
+          if [[ "${{ inputs.buildDemo }}" == "true" ]]; then
+            opts="$opts -DBUILD_ccldemo=ON"
+          fi
+          if [[ "${{ inputs.buildLocalizer }}" == "true" ]]; then
+            opts="$opts -DBUILD_localizer=ON"
+          fi
+          if [[ "${{ inputs.buildSkinEditor }}" == "true" ]]; then
+            opts="$opts -DBUILD_skineditor=ON"
+          fi
+          echo "cmake_build_options=$opts" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Run build script
+        uses: ./.github/ci/mac/execute-build-script
+        with:
+          script: build_applications.sh
+          targetos: ${{ matrix.targetos }}
+        env:
+          APPLE_DEVELOPERID_CERTIFICATE_BASE64: ${{ secrets.APPLE_DEVELOPERID_CERTIFICATE_BASE64 }}
+          APPLE_DEVELOPERID_CERTIFICATE_P12_PASSWORD: ${{ secrets.APPLE_DEVELOPERID_CERTIFICATE_P12_PASSWORD }}
+          APPLE_DEVELOPMENT_CERTIFICATE_BASE64: ${{ secrets.APPLE_DEVELOPMENT_CERTIFICATE_BASE64 }}
+          APPLE_DEVELOPMENT_CERTIFICATE_P12_PASSWORD: ${{ secrets.APPLE_DEVELOPMENT_CERTIFICATE_P12_PASSWORD }}
+          APPLE_DISTRIBUTION_CERTIFICATE_BASE64: ${{ secrets.APPLE_DISTRIBUTION_CERTIFICATE_BASE64 }}
+          APPLE_DISTRIBUTION_CERTIFICATE_P12_PASSWORD: ${{ secrets.APPLE_DISTRIBUTION_CERTIFICATE_P12_PASSWORD }}
+          APPLE_KEYCHAIN_PASSWORD: ${{ secrets.APPLE_KEYCHAIN_PASSWORD }}
+          APPLE_API_KEY_BASE64: ${{ secrets.APPLE_API_KEY_BASE64 }}
+          APPLE_API_KEY_FILENAME: ${{ vars.APPLE_API_KEY_FILENAME }}
+          APPLE_API_KEYID: ${{ vars.APPLE_API_KEYID }}
+          APPLE_API_ISSUER: ${{ vars.APPLE_API_ISSUER }}
+          SIGNING_CERTIFICATE_MAC: ${{ vars.SIGNING_CERTIFICATE_MAC }}
+          CMAKE_BUILD_OPTIONS: ${{ steps.cmake_opts.outputs.cmake_build_options }}
+
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ccl-applications-${{matrix.targetos}}
+          path: |
+            build/deployment/mac/*.*

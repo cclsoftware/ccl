@@ -1,0 +1,125 @@
+name: CCL SDK for Linux
+
+concurrency:
+  group: ccl-sdk-linux
+  
+on:
+  workflow_call:
+    inputs:
+      docartifact:
+        description: 'Documentation Artifact ID'
+        required: false
+        default: ''
+        type: string
+      androidartifact:
+        description: 'Android SDK Artifact ID'
+        required: false
+        default: ''
+        type: string
+  
+jobs:
+  build:
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - host: ubuntu-latest
+            image: ccl-linux-sdk:22.04
+            targetos: linux
+            
+    runs-on: ${{matrix.host}}
+    
+    permissions:
+      contents: read
+      packages: read
+      actions: read
+      
+    container:
+      image: ghcr.io/cclsoftware/${{matrix.image}}
+      credentials:
+        username: ${{github.actor}}
+        password: ${{secrets.GITHUB_TOKEN}}
+        
+    steps:
+    
+      - name: Print Statistics
+        run:
+          df -h
+    
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Download documentation
+        if: inputs.docartifact != ''
+        uses: actions/download-artifact@v5
+        with:
+          artifact-ids: ${{ inputs.docartifact }}
+          path: ${{ github.workspace }}/.docs
+          merge-multiple: true
+
+      - name: Download Android SDK
+        if: inputs.androidartifact != ''
+        uses: actions/download-artifact@v5
+        with:
+          artifact-ids: ${{ inputs.androidartifact }}
+          path: ${{ github.workspace }}/.android
+          merge-multiple: true
+
+      - name: Print Statistics
+        run:
+          df -h
+          
+      - name: Prepare build environment
+        uses: ./.github/ci/linux/prepare-build-environment
+        with:
+          targetos: ${{ matrix.targetos }}
+    
+      - name: Prepare SDK build environment
+        shell: bash
+        run: |
+          source .github/ci/${{matrix.targetos }}/prepare_sdk_environment.sh
+          
+      - name: Configure CMake Project
+        shell: bash
+        run: |
+          export CMAKE_BUILD_OPTIONS="${CMAKE_BUILD_OPTIONS:-} -DBUILD_sdk=ON -DBUILD_documentation=OFF -DCCL_PREBUILT_DOCUMENTATION=${GITHUB_WORKSPACE}/.docs -DCCL_ANDROID_SDK_DIR=${GITHUB_WORKSPACE}/.android"
+          source .github/ci/${{ matrix.targetos }}/configure_cmake_project.sh
+        env:
+          BUILD_DIR: "build/sdk"
+       
+      - name: Build Release Binaries
+        shell: bash
+        run: |
+          cd development/cmake/build/sdk  
+          source ${GITHUB_WORKSPACE}/.github/ci/${{ matrix.targetos }}/build_cmake_target.sh
+        env:
+          BUILD_CONFIG: Release
+       
+      - name: Build Debug Binaries
+        shell: bash
+        run: |
+          cd development/cmake/build/sdk  
+          source ${GITHUB_WORKSPACE}/.github/ci/${{ matrix.targetos }}/build_cmake_target.sh
+        env:
+          BUILD_CONFIG: Debug
+       
+      - name: Print Statistics
+        run:
+          df -h
+          
+      - name: Package
+        shell: bash
+        run: |
+          cd development/cmake/build/sdk    
+          cpack -C 'Debug;Release' --config SdkPackageConfig.cmake ${CPACK_OPTIONS}
+          
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ccl-sdk-${{matrix.targetos}}
+          path: |
+            build/cmake/archive/*.gz
+            build/cmake/archive/*.sh

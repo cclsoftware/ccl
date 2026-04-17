@@ -1,0 +1,41 @@
+name: Prepare Windows Build Environment
+  
+inputs:
+  image:
+    description: 'Docker Image'
+    required: true
+    default: 'ccl-win-base:latest'
+  targetos:
+    description: 'Target Operating System'
+    required: true
+    default: 'win'
+  token:
+    description: 'Access token with permissions to download artifacts'
+    required: true
+    default: ''
+  
+runs:
+  using: "composite"
+  steps:
+    
+    - name: Setup CCL cache
+      id: cache-ccl
+      uses: actions/cache@v5
+      with:
+        path: .cache/ccl
+        key: cclcache-${{ inputs.targetos }}-${{ github.ref_name }}-${{ github.run_id }}
+        restore-keys: |
+          cclcache-${{ inputs.targetos }}-${{ github.ref_name }}
+        
+    - name: Log into registry
+      uses: docker/login-action@v3.1.0
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ inputs.token }}
+        
+    - name: Pull container
+      shell: bash
+      run: |
+        ./.github/ci/win/pull_container.sh "ghcr.io/cclsoftware/${{ inputs.image }}"
+        

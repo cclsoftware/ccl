@@ -1,0 +1,75 @@
+name: Run script in build environment
+description: 'Action to run a shell script in the prepared build environment on Mac'
+
+inputs:
+  targetos:
+    description: 'Target Operating System'
+    required: true
+    default: 'mac'
+  script:
+    description: 'Shell script to execute'
+    required: true
+  
+runs:
+  using: "composite"
+  steps:
+      - name: Output status
+        shell: bash
+        run: |
+          echo "Runner: $RUNNER_NAME"
+          echo "OS: $RUNNER_OS"
+          echo "Image: $ImageOS"
+          echo "Hostname: $(hostname)"
+          echo "User: $(whoami)"
+          pwd
+      
+      - name: Setup ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ccache-${{ inputs.targetos }}-${{ github.ref_name }}-${{ github.run_id }}
+          restore-keys: |
+             ccache-${{ inputs.targetos }}-${{ github.ref_name }}
+
+      - name: Setup CCL cache
+        id: cache-ccl
+        uses: actions/cache@v5
+        with:
+          path: .cache/ccl
+          key: cclcache-${{ inputs.targetos }}-${{ github.ref_name }}-${{ github.run_id }}
+          restore-keys: |
+             cclcache-${{ inputs.targetos }}-${{ github.ref_name }}
+
+      - name: Log pre-run CCL cache
+        shell: bash
+        run: test -d .cache && ls -lR .cache || echo ".cache missing"
+
+      - name: Prepare workingcopy
+        shell: bash
+        run: |
+          .github/ci/shared/prepare_workingcopy.sh ${{github.run_number}}
+
+      - name: Build
+        shell: bash      
+        env:
+          APPLE_DEVELOPERID_CERTIFICATE_BASE64: ${{ env.APPLE_DEVELOPERID_CERTIFICATE_BASE64 }}
+          APPLE_DEVELOPERID_CERTIFICATE_P12_PASSWORD: ${{ env.APPLE_DEVELOPERID_CERTIFICATE_P12_PASSWORD }}
+          APPLE_DEVELOPMENT_CERTIFICATE_BASE64: ${{ env.APPLE_DEVELOPMENT_CERTIFICATE_BASE64 }}
+          APPLE_DEVELOPMENT_CERTIFICATE_P12_PASSWORD: ${{ env.APPLE_DEVELOPMENT_CERTIFICATE_P12_PASSWORD }}
+          APPLE_DISTRIBUTION_CERTIFICATE_BASE64: ${{ env.APPLE_DISTRIBUTION_CERTIFICATE_BASE64 }}
+          APPLE_DISTRIBUTION_CERTIFICATE_P12_PASSWORD: ${{ env.APPLE_DISTRIBUTION_CERTIFICATE_P12_PASSWORD }}
+          APPLE_KEYCHAIN_PASSWORD: ${{ env.APPLE_KEYCHAIN_PASSWORD }}
+          APPLE_API_KEY_BASE64: ${{ env.APPLE_API_KEY_BASE64 }}
+          APPLE_API_KEY_FILENAME: ${{ env.APPLE_API_KEY_FILENAME }}
+          APPLE_API_KEYID: ${{ env.APPLE_API_KEYID }}
+          APPLE_API_ISSUER: ${{ env.APPLE_API_ISSUER }}
+          SIGNING_CERTIFICATE_MAC: ${{ env.SIGNING_CERTIFICATE_MAC }}
+          CCACHE_DIR: ${{ github.workspace }}/.ccache
+          CMAKE_BUILD_OPTIONS:  ${{ env.CMAKE_BUILD_OPTIONS }} -DVENDOR_USE_PUBLISHER_CERTIFICATE=ON -DSIGNING_CERTIFICATE_MAC=${{ env.SIGNING_CERTIFICATE_MAC }} -DVENDOR_CACHE_DIRECTORY=${{ github.workspace }}/.cache/ccl
+        run: |
+          .github/ci/mac/setup_keychain.sh
+          .github/ci/mac/configure_system.sh
+          .github/ci/mac/${{ inputs.script }}
+
+      - name: Log post-run CCL cache
+        shell: bash
+        run: test -d .cache && ls -lR .cache || echo ".cache missing"

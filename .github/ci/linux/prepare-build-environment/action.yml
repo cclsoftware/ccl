@@ -1,0 +1,58 @@
+name: Prepare Linux Build Environment
+  
+inputs:
+  targetos:
+    description: 'Target Operating System'
+    required: true
+    default: 'linux'
+  
+runs:
+  using: "composite"
+  steps:
+    
+    - name: Setup ccache
+      if: inputs.targetos != 'win'
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: ccache-${{ inputs.targetos }}-${{ github.ref_name }}-${{ github.run_id }}
+        restore-keys: |
+          ccache-${{ inputs.targetos }}-${{ github.ref_name }}
+        append-timestamp: false
+        
+    - name: Setup CCL cache
+      id: cache-ccl
+      uses: actions/cache@v5
+      with:
+        path: .cache/ccl
+        key: cclcache-${{ inputs.targetos }}-${{ github.ref_name }}-${{ github.run_id }}
+        restore-keys: |
+          cclcache-${{ inputs.targetos }}-${{ github.ref_name }}
+        
+    - name: Prepare environment
+      shell: bash
+      run: |
+        .github/ci/${{inputs.targetos}}/prepare_build_environment.sh
+          
+    - name: Prepare workingcopy
+      shell: bash
+      run: |
+        .github/ci/shared/prepare_workingcopy.sh ${{github.run_number}}
+      
+    - name: Build CCL tools
+      if: ${{ inputs.targetos == 'linux' }}
+      shell: bash
+      run: |
+        echo "-- Test if CCL tools are executable"
+        command_failed=0
+        ${GITHUB_WORKSPACE}/framework/tools/bin/linux/ccl/x86_64/cclmakeguid || command_failed=1
+        if [ ${command_failed:-0} -eq 1 ]; then
+          echo "-- Build required tools"
+          cd development/cmake
+          cmake -B build/tools --fresh --preset linux-release -DBUILD_tools=ON ${CMAKE_BUILD_OPTIONS} \
+            -DVENDOR_BUILDOUTPUT_DIRECTORY=${GITHUB_WORKSPACE}/framework/tools/bin/linux/ccl/x86_64 \
+            -DVENDOR_CACHE_DIRECTORY=${GITHUB_WORKSPACE}/.cache/ccl
+          cd build/tools
+          cmake --build . --target cclpackage
+          cmake --build . --target crypt
+        fi
+                    

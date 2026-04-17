@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+export CMAKE_BUILD_OPTIONS="${CMAKE_BUILD_OPTIONS:-} -DVENDOR_ENABLE_CODESIGNING=ON"
+export CPACK_OPTIONS="${CPACK_OPTIONS:-} -G NSIS64"
+
+export CMAKE_PRESET="${CMAKE_PRESET:-win64}"

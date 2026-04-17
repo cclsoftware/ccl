@@ -1,0 +1,105 @@
+name: CCL Applications
+
+concurrency:
+  group: ccl-applications
+  
+permissions:
+  contents: read
+  packages: read
+
+on: 
+  workflow_dispatch:
+    inputs:
+      buildWin:
+        description: 'Build for Windows'
+        type: boolean
+        required: true
+        default: true
+      buildMac:
+        description: 'Build for Mac'
+        type: boolean
+        required: true
+        default: true
+      buildIos:
+        description: 'Build for iOS'
+        type: boolean
+        required: true
+        default: true
+      buildLinux:
+        description: 'Build for Linux'
+        type: boolean
+        required: true
+        default: true
+      buildAndroid:
+        description: 'Build for Android'
+        type: boolean
+        required: true
+        default: true
+        
+      buildDemo:
+        description: 'Build CCL Demo'
+        type: boolean
+        required: true
+        default: true
+      buildLocalizer:
+        description: 'Build CCL Localizer'
+        type: boolean
+        required: true
+        default: true
+      buildSkinEditor:
+        description: 'Build CCL Skin Editor'
+        type: boolean
+        required: true
+        default: true
+
+jobs:
+
+  build-linux-applications:
+    if: ${{ inputs.buildLinux }}
+    uses: ./.github/workflows/ccl-applications-linux.yml
+    with:
+      buildDemo: ${{ inputs.buildDemo }}
+      buildLocalizer: ${{ inputs.buildLocalizer }}
+      buildSkinEditor: ${{ inputs.buildSkinEditor }}
+    permissions:
+      contents: read
+      packages: read
+    secrets: inherit
+    
+  build-windows-applications:
+    if: ${{ inputs.buildWin }}
+    uses: ./.github/workflows/ccl-applications-win.yml
+    with:
+      buildDemo: ${{ inputs.buildDemo }}
+      buildLocalizer: ${{ inputs.buildLocalizer }}
+      buildSkinEditor: ${{ inputs.buildSkinEditor }}
+    permissions:
+      contents: read
+      packages: read
+    secrets: inherit
+    
+  build-macos-applications:
+    if: ${{ inputs.buildMac }}
+    uses: ./.github/workflows/ccl-applications-mac.yml
+    with:
+      buildDemo: ${{ inputs.buildDemo }}
+      buildLocalizer: ${{ inputs.buildLocalizer }}
+      buildSkinEditor: ${{ inputs.buildSkinEditor }}
+    secrets: inherit
+
+  build-ios-applications:
+    if: ${{ inputs.buildIos }}
+    uses: ./.github/workflows/ccl-applications-ios.yml
+    with:
+      buildDemo: ${{ inputs.buildDemo }}
+    secrets: inherit
+
+  build-android-applications:
+    if: ${{ inputs.buildAndroid }}
+    uses: ./.github/workflows/ccl-applications-android.yml
+    with:
+      buildDemo: ${{ inputs.buildDemo }}
+    permissions:
+      contents: read
+      packages: read
+    secrets: inherit

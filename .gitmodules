@@ -1,0 +1,17 @@
+[submodule "ccl-framework"]
+	path = framework
+	url = git@github.com:cclsoftware/ccl-framework
+        branch = main
+ 
+[submodule "applications/ccl-demo"]
+	path = applications/ccl-demo
+	url = git@github.com:cclsoftware/ccl-demo
+	branch = main
+[submodule "applications/ccl-localizer"]
+	path = applications/ccl-localizer
+	url = git@github.com:cclsoftware/ccl-localizer
+	branch = main
+[submodule "applications/ccl-skin-editor"]
+	path = applications/ccl-skin-editor
+	url = git@github.com:cclsoftware/ccl-skin-editor
+	branch = main

@@ -1,0 +1,136 @@
+name: CCL Applications for Android
+
+concurrency:
+  group: ccl-applications-android
+
+on: 
+  workflow_call:
+    inputs:
+      buildDemo:
+        description: 'Build CCL Demo'
+        type: boolean
+        required: true
+        default: true
+
+jobs:
+  build:
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - host: ubuntu-latest
+            image: ccl-android-base:24.04
+            targetos: android
+
+    runs-on: ${{matrix.host}}
+
+    permissions:
+      contents: read
+      packages: read
+
+    container:
+      image: ghcr.io/cclsoftware/${{matrix.image}}
+      credentials:
+        username: ${{github.actor}}
+        password: ${{secrets.GITHUB_TOKEN}}
+        
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Prepare build environment
+        uses: ./.github/ci/linux/prepare-build-environment
+        with:
+          targetos: ${{ matrix.targetos }}
+
+      - name: Prepare SDK build environment
+        shell: bash
+        run: |
+          source .github/ci/${{matrix.targetos }}/prepare_sdk_environment.sh
+
+      - name: Generate signing config
+        shell: bash
+        run: |
+          cd build/signing/ccl
+          echo ${{ secrets.ANDROID_SIGNING_STORE_BASE64 }} | base64 -d > keystore.jks
+          printf "set (SIGNING_STORE_ANDROID \"${GITHUB_WORKSPACE}/build/signing/ccl/keystore.jks\")\n" > signing.cmake
+          printf "set (SIGNING_ALIAS_ANDROID \"${{ secrets.ANDROID_SIGNING_ALIAS }}\")\n" >> signing.cmake
+          printf "set (SIGNING_STORE_PASSWORD_ANDROID \"${{ secrets.ANDROID_SIGNING_STORE_PASSWORD }}\")\n" >> signing.cmake
+          printf "set (SIGNING_ALIAS_PASSWORD_ANDROID \"${{ secrets.ANDROID_SIGNING_ALIAS_PASSWORD }}\")\n" >> signing.cmake
+
+      - name: Configure CCL Demo project
+        if: inputs.buildDemo
+        shell: bash
+        run: |
+          printf "{ \"version\": 4, \"include\": [ \"../../../build/cmake/modules/shared/CMakePresets.json\" ] }\n" > applications/ccl-demo/cmake/CMakePresets.json
+          source ${GITHUB_WORKSPACE}/.github/ci/linux/configure_cmake_project.sh
+        env:
+          BUILD_DIR: "build"
+          BUILD_CONFIG: RelWithDebInfo
+          CMAKE_LIST_DIR: "applications/ccl-demo/cmake"
+          CMAKE_PRESET: android
+
+      - name: Build CCL Demo for Arm
+        if: inputs.buildDemo
+        shell: bash
+        run: |
+          cd applications/ccl-demo/cmake/build
+          source ${GITHUB_WORKSPACE}/.github/ci/${{ matrix.targetos }}/run_gradle_task.sh
+        env:
+          GRADLE_TASK: assembleArm7Release
+
+      - name: Build CCL Demo for Arm64
+        if: inputs.buildDemo
+        shell: bash
+        run: |
+          cd applications/ccl-demo/cmake/build
+          source ${GITHUB_WORKSPACE}/.github/ci/${{ matrix.targetos }}/run_gradle_task.sh
+        env:
+          GRADLE_TASK: assembleArm8Release
+
+      - name: Build CCL Demo for x86
+        if: inputs.buildDemo
+        shell: bash
+        run: |
+          cd applications/ccl-demo/cmake/build
+          source ${GITHUB_WORKSPACE}/.github/ci/${{ matrix.targetos }}/run_gradle_task.sh
+        env:
+          GRADLE_TASK: assembleX86Release
+
+      - name: Build CCL Demo for x86-64
+        if: inputs.buildDemo
+        shell: bash
+        run: |
+          cd applications/ccl-demo/cmake/build
+          source ${GITHUB_WORKSPACE}/.github/ci/${{ matrix.targetos }}/run_gradle_task.sh
+        env:
+          GRADLE_TASK: assembleX86_64Release
+
+      - name: Package CCL Demo
+        if: inputs.buildDemo
+        shell: bash
+        run: |
+          chmod a+x framework/build/android/scripts/*.sh
+          sed -i "s/\/bin\/sh/\/usr\/bin\/env bash/g" framework/build/android/scripts/*.sh
+          sed -i "s/\$HOME\/Android\/Sdk/\$ANDROID_HOME/g" framework/build/android/scripts/sdktools.sh
+          cd applications/ccl-demo/cmake/build
+          ${GITHUB_WORKSPACE}/framework/build/android/scripts/createaab.sh ccldemo release arm7+arm8+x86+x86_64
+          ${GITHUB_WORKSPACE}/framework/build/android/scripts/createmultiarchapk.sh ccldemo release arm7+arm8+x86+x86_64
+
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ccl-applications-${{matrix.targetos}}
+          path: |
+            applications/ccl-demo/cmake/build/*.apk
+
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ccl-applications-${{matrix.targetos}}-bundles
+          path: |
+            applications/ccl-demo/cmake/build/*.aab

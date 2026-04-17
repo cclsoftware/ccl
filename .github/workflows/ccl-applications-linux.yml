@@ -1,0 +1,104 @@
+name: CCL Applications for Linux
+
+concurrency:
+  group: ccl-applications-linux
+  
+on: 
+  workflow_call:
+    inputs:
+      buildDemo:
+        description: 'Build CCL Demo'
+        type: boolean
+        required: true
+        default: true
+      buildLocalizer:
+        description: 'Build CCL Localizer'
+        type: boolean
+        required: true
+        default: true
+      buildSkinEditor:
+        description: 'Build CCL Skin Editor'
+        type: boolean
+        required: true
+        default: true
+  
+jobs:
+  build:
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - host: ubuntu-latest
+            image: ccl-linux-base:22.04
+            targetos: linux
+    
+    runs-on: ${{matrix.host}}
+    
+    permissions:
+      contents: read
+      packages: read
+      
+    container:
+      image: ghcr.io/cclsoftware/${{matrix.image}}
+      credentials:
+        username: ${{github.actor}}
+        password: ${{secrets.GITHUB_TOKEN}}
+        
+    steps:
+    
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+    
+      - name: Prepare build environment
+        uses: ./.github/ci/linux/prepare-build-environment
+        with:
+          targetos: ${{ matrix.targetos }}
+    
+      - name: Build CCL Demo
+        if: inputs.buildDemo
+        shell: bash
+        run: |
+          export CMAKE_BUILD_OPTIONS="${CMAKE_BUILD_OPTIONS:-} -DBUILD_ccldemo=ON"
+          source ${GITHUB_WORKSPACE}/.github/ci/${{ matrix.targetos }}/configure_cmake_project.sh
+          cd ${BUILD_DIR} 
+          source ${GITHUB_WORKSPACE}/.github/ci/${{ matrix.targetos }}/build_cmake_target.sh
+        env:
+          BUILD_DIR: "build/ccldemo"
+          BUILD_CONFIG: Release
+          CPACK_TARGET: package
+       
+      - name: Build CCL Localizer
+        if: inputs.buildLocalizer
+        shell: bash
+        run: |
+          export CMAKE_BUILD_OPTIONS="${CMAKE_BUILD_OPTIONS:-} -DBUILD_localizer=ON"
+          source ${GITHUB_WORKSPACE}/.github/ci/${{ matrix.targetos }}/configure_cmake_project.sh
+          cd ${BUILD_DIR} 
+          source ${GITHUB_WORKSPACE}/.github/ci/${{ matrix.targetos }}/build_cmake_target.sh
+        env:
+          BUILD_DIR: "build/localizer"
+          BUILD_CONFIG: Release
+          CPACK_TARGET: package
+          
+      - name: Build CCL Skin Editor
+        if: inputs.buildDemo
+        shell: bash
+        run: |
+          export CMAKE_BUILD_OPTIONS="${CMAKE_BUILD_OPTIONS:-} -DBUILD_skineditor=ON"
+          source ${GITHUB_WORKSPACE}/.github/ci/${{ matrix.targetos }}/configure_cmake_project.sh
+          cd ${BUILD_DIR} 
+          source ${GITHUB_WORKSPACE}/.github/ci/${{ matrix.targetos }}/build_cmake_target.sh
+        env:
+          BUILD_DIR: "build/skineditor"
+          BUILD_CONFIG: Release
+          CPACK_TARGET: package
+          
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ccl-applications-${{matrix.targetos}}
+          path: |
+            build/cmake/archive/*.deb

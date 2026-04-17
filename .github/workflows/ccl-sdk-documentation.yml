@@ -1,0 +1,81 @@
+name: CCL SDK Documentation
+
+concurrency:
+  group: ccl-sdk-documentation
+  
+on:
+  workflow_call:
+    outputs:
+      artifact-id:
+        description: "Uploaded artifact ID"
+        value: ${{ jobs.build.outputs.artifact-id }}
+  
+jobs:
+  build:
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - host: ubuntu-latest
+            image: ccl-linux-sdk:22.04
+            targetos: linux
+            
+    runs-on: ${{matrix.host}}
+    
+    permissions:
+      contents: read
+      packages: read
+      actions: read
+      
+    outputs:
+      artifact-id: ${{ steps.artifact-upload-step.outputs.artifact-id }}
+
+    container:
+      image: ghcr.io/cclsoftware/${{matrix.image}}
+      credentials:
+        username: ${{github.actor}}
+        password: ${{secrets.GITHUB_TOKEN}}
+        
+    steps:
+    
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Prepare build environment
+        uses: ./.github/ci/linux/prepare-build-environment
+        with:
+          targetos: ${{ matrix.targetos }}
+    
+      - name: Prepare SDK build environment
+        shell: bash
+        run: |
+          source .github/ci/${{matrix.targetos }}/prepare_sdk_environment.sh
+          
+      - name: Configure CMake Project
+        shell: bash
+        run: |
+          export CMAKE_BUILD_OPTIONS="${CMAKE_BUILD_OPTIONS:-} -DBUILD_documentation=ON"
+          source .github/ci/${{ matrix.targetos }}/configure_cmake_project.sh
+        env:
+          BUILD_DIR: "build/sdk"
+       
+      - name: Build Documentation
+        shell: bash
+        run: |
+          cd development/cmake/build/sdk  
+          source ${GITHUB_WORKSPACE}/.github/ci/${{ matrix.targetos }}/build_cmake_target.sh
+        env:
+          BUILD_CONFIG: Release
+       
+      - name: Archive artifacts
+        id: artifact-upload-step
+        uses: actions/upload-artifact@v5
+        with:
+          name: ccl-sdk-documentation
+          path: framework/tools/doctools/makedoc/output/dev.ccl.doc.cclpublicsdk/html/
+          retention-days: 1
+          overwrite: true
+          include-hidden-files: true
