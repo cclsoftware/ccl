@@ -1,3 +1,7 @@
+############################################################
+# CCL HTML Documentation, part of CCL SDK workflow
+############################################################
+
 name: CCL SDK Documentation
 
 concurrency:
