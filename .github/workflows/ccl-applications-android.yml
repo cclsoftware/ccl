@@ -114,9 +114,6 @@ jobs:
         if: inputs.buildDemo
         shell: bash
         run: |
-          chmod a+x framework/build/android/scripts/*.sh
-          sed -i "s/\/bin\/sh/\/usr\/bin\/env bash/g" framework/build/android/scripts/*.sh
-          sed -i "s/\$HOME\/Android\/Sdk/\$ANDROID_HOME/g" framework/build/android/scripts/sdktools.sh
           cd applications/ccl-demo/cmake/build
           ${GITHUB_WORKSPACE}/framework/build/android/scripts/createaab.sh ccldemo release arm7+arm8+x86+x86_64
           ${GITHUB_WORKSPACE}/framework/build/android/scripts/createmultiarchapk.sh ccldemo release arm7+arm8+x86+x86_64

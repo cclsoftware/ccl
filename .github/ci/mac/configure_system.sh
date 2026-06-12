@@ -12,7 +12,7 @@ set -euo pipefail
 # brew install doxygen
 
 # configure Xcode version
-xcodes select 16.0
+xcodes select 26.0.1
 xcrun simctl list > /dev/null # Required to prevent the next command from sometimes not working
 xcodebuild -downloadPlatform iOS
 

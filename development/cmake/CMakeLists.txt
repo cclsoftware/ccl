@@ -26,7 +26,7 @@ if (BUILD_sdk)
 		set (PROJECT_APPSUPPORT_DESTINATION ".")
 		set (PROJECT_DEBUG_SUFFIX "d")
 	elseif (UNIX AND NOT APPLE)
-		set (PROJECT_VERSION_SUBDIRECTORY "ccl/5.0.2") # TODO: parse version number?
+		set (PROJECT_VERSION_SUBDIRECTORY "ccl/5.1.0") # TODO: parse version number?
 	endif ()
 
 	find_package (corelib REQUIRED COMPONENTS corelib coreextras-extensions coreextras-games coreextras-web)
