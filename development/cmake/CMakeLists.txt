@@ -144,6 +144,33 @@ elseif (CCL_PREBUILT_DOCUMENTATION)
 	install_documentation ("${CCL_PREBUILT_DOCUMENTATION}")
 endif ()
 
+# PDF Documentation
+
+option (BUILD_cclstartguide_pdf "Build CCL Start Guide PDF" OFF)
+if (BUILD_cclstartguide_pdf)
+	add_documentation (PROJECT "dev.ccl.doc.cclstartguide" FORMAT "pdf")
+endif ()
+
+option (BUILD_cclframework_pdf "Build CCL Framework PDF" OFF)
+if (BUILD_cclframework_pdf)
+	add_documentation (PROJECT "dev.ccl.doc.cclframework" FORMAT "pdf")
+endif ()
+
+option (BUILD_skinlanguage_pdf "Build Skin Language PDF" OFF)
+if (BUILD_skinlanguage_pdf)
+	add_documentation (PROJECT "dev.ccl.doc.skinlanguage" FORMAT "pdf")
+endif ()
+
+option (BUILD_codestyle_pdf "Build Code Style PDF" OFF)
+if (BUILD_codestyle_pdf)
+	add_documentation (PROJECT "dev.ccl.doc.codestyle" FORMAT "pdf")
+endif ()
+
+option (BUILD_extension_pdf "Build Extension Guide PDF" OFF)
+if (BUILD_extension_pdf)
+	add_documentation (PROJECT "dev.ccl.doc.extension" FORMAT "pdf")
+endif ()
+
 # SDK package
 
 if (BUILD_sdk)

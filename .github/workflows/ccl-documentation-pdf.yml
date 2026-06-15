@@ -1,0 +1,149 @@
+############################################################
+# CCL PDF Documentation
+############################################################
+
+name: CCL PDF Documentation
+
+concurrency:
+  group: ccl-documentation-pdf
+
+on:
+  workflow_dispatch:
+    inputs:
+      buildStartGuide:
+        description: 'Build CCL Start Guide PDF'
+        type: boolean
+        required: false
+        default: true
+      buildFramework:
+        description: 'Build CCL Framework PDF'
+        type: boolean
+        required: false
+        default: true
+      buildSkinLanguage:
+        description: 'Build Skin Language PDF'
+        type: boolean
+        required: false
+        default: true
+      buildCodeStyle:
+        description: 'Build Code Style PDF'
+        type: boolean
+        required: false
+        default: true
+      buildExtension:
+        description: 'Build Extension Guide PDF'
+        type: boolean
+        required: false
+        default: true
+  workflow_call:
+    inputs:
+      buildStartGuide:
+        description: 'Build CCL Start Guide PDF'
+        type: boolean
+        required: false
+        default: true
+      buildFramework:
+        description: 'Build CCL Framework PDF'
+        type: boolean
+        required: false
+        default: true
+      buildSkinLanguage:
+        description: 'Build Skin Language PDF'
+        type: boolean
+        required: false
+        default: true
+      buildCodeStyle:
+        description: 'Build Code Style PDF'
+        type: boolean
+        required: false
+        default: true
+      buildExtension:
+        description: 'Build Extension Guide PDF'
+        type: boolean
+        required: false
+        default: true
+    outputs:
+      artifact-id:
+        description: "Uploaded artifact ID"
+        value: ${{ jobs.build.outputs.artifact-id }}
+
+jobs:
+  build:
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - host: ubuntu-latest
+            image: ccl-linux-sdk:22.04
+            targetos: linux
+
+    runs-on: ${{matrix.host}}
+
+    permissions:
+      contents: read
+      packages: read
+      actions: read
+
+    outputs:
+      artifact-id: ${{ steps.artifact-upload-step.outputs.artifact-id }}
+
+    container:
+      image: ghcr.io/cclsoftware/${{matrix.image}}
+      credentials:
+        username: ${{github.actor}}
+        password: ${{secrets.GITHUB_TOKEN}}
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Prepare build environment
+        uses: ./.github/ci/linux/prepare-build-environment
+        with:
+          targetos: ${{ matrix.targetos }}
+
+      - name: Prepare SDK build environment
+        shell: bash
+        run: |
+          source .github/ci/${{matrix.targetos }}/prepare_sdk_environment.sh
+
+      - name: Configure CMake Project
+        shell: bash
+        run: |
+          export CMAKE_BUILD_OPTIONS="${CMAKE_BUILD_OPTIONS:-} \
+            -DBUILD_documentation=OFF \
+            -DBUILD_cclstartguide_pdf=${{ inputs.buildStartGuide }} \
+            -DBUILD_cclframework_pdf=${{ inputs.buildFramework }} \
+            -DBUILD_skinlanguage_pdf=${{ inputs.buildSkinLanguage }} \
+            -DBUILD_codestyle_pdf=${{ inputs.buildCodeStyle }} \
+            -DBUILD_extension_pdf=${{ inputs.buildExtension }}"
+          source .github/ci/${{ matrix.targetos }}/configure_cmake_project.sh
+        env:
+          BUILD_DIR: "build/documentation-pdf"
+
+      - name: Build Documentation
+        shell: bash
+        run: |
+          cd development/cmake/build/documentation-pdf
+          source ${GITHUB_WORKSPACE}/.github/ci/${{ matrix.targetos }}/build_cmake_target.sh
+        env:
+          BUILD_CONFIG: Release
+
+      - name: Find output
+        shell: bash
+        run: |
+          find . -iname '*.pdf'
+        
+      - name: Archive artifacts
+        id: artifact-upload-step
+        uses: actions/upload-artifact@v5
+        with:
+          name: ccl-documentation-pdf
+          path: framework/tools/doctools/makedoc/output/**/*.pdf
+          retention-days: 7
+          overwrite: true
+          include-hidden-files: true

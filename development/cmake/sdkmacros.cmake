@@ -104,6 +104,8 @@ function (add_documentation)
 
 	if ("${documentation_FORMAT}" STREQUAL "html")
 		set (output_suffix "html")
+	elseif ("${documentation_FORMAT}" STREQUAL "pdf")
+		set (output_suffix "pdf")
 	endif ()
 
 	set (documentation_revision_number "${CCL_VERSION_BUILD}")
@@ -111,8 +113,11 @@ function (add_documentation)
 	set (makedoc "${CCL_REPOSITORY_ROOT}/tools/doctools/makedoc/makedoc.py")
 	set (output_path "${CCL_REPOSITORY_ROOT}/tools/doctools/makedoc/output/${documentation_PROJECT}/${output_suffix}")
 
-	ExternalProject_Add (sdk-documentation
-		PREFIX "${CMAKE_BINARY_DIR}/sdk-documentation"
+	# Derive a unique target name so multiple documentation projects/formats can be built side by side
+	string (MAKE_C_IDENTIFIER "${documentation_PROJECT}_${documentation_FORMAT}" documentation_target_id)
+
+	ExternalProject_Add (sdk-documentation-${documentation_target_id}
+		PREFIX "${CMAKE_BINARY_DIR}/sdk-documentation-${documentation_target_id}"
 		SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}"
 		LIST_SEPARATOR "|"
 		CONFIGURE_COMMAND ""
