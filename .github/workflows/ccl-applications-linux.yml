@@ -69,6 +69,7 @@ jobs:
           BUILD_DIR: "build/ccldemo"
           BUILD_CONFIG: Release
           CPACK_TARGET: package
+          CMAKE_PRESET: linux-release
        
       - name: Build CCL Localizer
         if: inputs.buildLocalizer
@@ -82,6 +83,7 @@ jobs:
           BUILD_DIR: "build/localizer"
           BUILD_CONFIG: Release
           CPACK_TARGET: package
+          CMAKE_PRESET: linux-release
           
       - name: Build CCL Skin Editor
         if: inputs.buildDemo
@@ -95,6 +97,7 @@ jobs:
           BUILD_DIR: "build/skineditor"
           BUILD_CONFIG: Release
           CPACK_TARGET: package
+          CMAKE_PRESET: linux-release
           
       - name: Archive artifacts
         uses: actions/upload-artifact@v4
