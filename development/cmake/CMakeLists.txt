@@ -12,6 +12,16 @@ include (${CMAKE_CURRENT_LIST_DIR}/sdkmacros.cmake)
 
 option (BUILD_sdk "Build CCL SDK" OFF)
 if (BUILD_sdk)
+	find_file (version_header NAMES coreversion.h PATHS ${CMAKE_CURRENT_LIST_DIR}/../../framework/core/public REQUIRED)
+	file (READ "${version_header}" version_header_content)
+	string (REGEX MATCH "#define[ \t]+CORE_VERSION_MAJOR[ \t]+([0-9]+)" _ "${version_header_content}")
+	set (version_major "${CMAKE_MATCH_1}")
+	string (REGEX MATCH "#define[ \t]+CORE_VERSION_MINOR[ \t]+([0-9]+)" _ "${version_header_content}")
+	set (version_minor "${CMAKE_MATCH_1}")
+	string (REGEX MATCH "#define[ \t]+CORE_VERSION_REVISION[ \t]+([0-9]+)" _ "${version_header_content}")
+	set (version_revision "${CMAKE_MATCH_1}")
+	set (SDK_VERSION_STRING "${version_major}.${version_minor}.${version_revision}")
+
 	set (CCL_SYSTEM_INSTALL ON CACHE BOOL "" FORCE)
 	set (CCL_DISABLE_CPACK ON CACHE INTERNAL "" FORCE) # disable packaging for components, create a single SDK package instead
 
@@ -26,7 +36,7 @@ if (BUILD_sdk)
 		set (PROJECT_APPSUPPORT_DESTINATION ".")
 		set (PROJECT_DEBUG_SUFFIX "d")
 	elseif (UNIX AND NOT APPLE)
-		set (PROJECT_VERSION_SUBDIRECTORY "ccl/5.1.1") # TODO: parse version number?
+		set (PROJECT_VERSION_SUBDIRECTORY "ccl/${SDK_VERSION_STRING}")
 	endif ()
 
 	find_package (corelib REQUIRED COMPONENTS corelib coreextras-extensions coreextras-games coreextras-web)
