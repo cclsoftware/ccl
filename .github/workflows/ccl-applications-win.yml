@@ -64,10 +64,11 @@ jobs:
         uses: ./.github/ci/win/build-cmake-target
         with:
           image: ${{ matrix.image }}
-          signkeyvault: ${{ secrets.SIGNING_AZURE_KEYVAULT_WIN }}
           signclientid: ${{ secrets.SIGNING_AZURE_CLIENTID_WIN }}
           signtenantid: ${{ secrets.SIGNING_AZURE_TENANTID_WIN }}
-          signcert: ${{ secrets.SIGNING_CERTIFICATE_WIN }}
+          signendpoint: ${{ vars.SIGNING_ENDPOINT_WIN }}
+          signaccount: ${{ vars.SIGNING_ACCOUNTNAME_WIN }}
+          signprofile: ${{ vars.SIGNING_PROFILE_WIN }}
           signserver: ${{ vars.SIGNING_TIMESTAMP_SERVER_WIN }}
           signsecret: ${{ secrets.SIGNING_AZURE_SECRET_WIN }}
           dockerargs: |
@@ -82,10 +83,11 @@ jobs:
         uses: ./.github/ci/win/build-cmake-target
         with:
           image: ${{ matrix.image }}
-          signkeyvault: ${{ secrets.SIGNING_AZURE_KEYVAULT_WIN }}
           signclientid: ${{ secrets.SIGNING_AZURE_CLIENTID_WIN }}
           signtenantid: ${{ secrets.SIGNING_AZURE_TENANTID_WIN }}
-          signcert: ${{ secrets.SIGNING_CERTIFICATE_WIN }}
+          signendpoint: ${{ vars.SIGNING_ENDPOINT_WIN }}
+          signaccount: ${{ vars.SIGNING_ACCOUNTNAME_WIN }}
+          signprofile: ${{ vars.SIGNING_PROFILE_WIN }}
           signserver: ${{ vars.SIGNING_TIMESTAMP_SERVER_WIN }}
           signsecret: ${{ secrets.SIGNING_AZURE_SECRET_WIN }}
           dockerargs: |
@@ -100,10 +102,11 @@ jobs:
         uses: ./.github/ci/win/build-cmake-target
         with:
           image: ${{ matrix.image }}
-          signkeyvault: ${{ secrets.SIGNING_AZURE_KEYVAULT_WIN }}
           signclientid: ${{ secrets.SIGNING_AZURE_CLIENTID_WIN }}
           signtenantid: ${{ secrets.SIGNING_AZURE_TENANTID_WIN }}
-          signcert: ${{ secrets.SIGNING_CERTIFICATE_WIN }}
+          signendpoint: ${{ vars.SIGNING_ENDPOINT_WIN }}
+          signaccount: ${{ vars.SIGNING_ACCOUNTNAME_WIN }}
+          signprofile: ${{ vars.SIGNING_PROFILE_WIN }}
           signserver: ${{ vars.SIGNING_TIMESTAMP_SERVER_WIN }}
           signsecret: ${{ secrets.SIGNING_AZURE_SECRET_WIN }}
           dockerargs: |

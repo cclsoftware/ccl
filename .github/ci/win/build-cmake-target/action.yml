@@ -9,10 +9,6 @@ inputs:
     description: 'Additional Docker Arguments'
     required: false
     default: ''
-  signkeyvault:
-    description: 'Signing Key Vault'
-    required: true
-    default: ''
   signclientid:
     description: 'Signing Client ID'
     required: true
@@ -21,14 +17,22 @@ inputs:
     description: 'Signing Tenant ID'
     required: true
     default: ''
-  signcert:
-    description: 'Signing Certificate'
+  signendpoint:
+    description: 'Signing Endpoint URL'
+    required: true
+    default: ''
+  signaccount:
+    description: 'Signing Account Name'
+    required: true
+    default: ''
+  signprofile:
+    description: 'Signing Certificate Profile'
     required: true
     default: ''
   signserver:
-    description: 'Signing Key Serve'
+    description: 'Signing Timestamp Server'
     required: true
-    default: ''  
+    default: ''
   signsecret:
     description: 'Signing Secret'
     required: true
@@ -44,10 +48,11 @@ runs:
         docker run \
           --volume "${{ github.workspace }}:C:\w" \
           --workdir "C:\\w" \
-          -e ccl_SIGNING_AZURE_KEYVAULT_WIN="${{ inputs.signkeyvault }}" \
           -e ccl_SIGNING_AZURE_CLIENTID_WIN="${{ inputs.signclientid }}" \
           -e ccl_SIGNING_AZURE_TENANTID_WIN="${{ inputs.signtenantid }}" \
-          -e ccl_SIGNING_CERTIFICATE_WIN="${{ inputs.signcert }}" \
+          -e ccl_SIGNING_ENDPOINT_WIN="${{ inputs.signendpoint }}" \
+          -e ccl_SIGNING_ACCOUNTNAME_WIN="${{ inputs.signaccount }}" \
+          -e ccl_SIGNING_PROFILE_WIN="${{ inputs.signprofile }}" \
           -e ccl_SIGNING_TIMESTAMP_SERVER_WIN="${{ inputs.signserver }}" \
           -e ccl_SIGNING_AZURE_SECRET="${{ inputs.signsecret }}" \
           ${{ inputs.dockerargs }} \
