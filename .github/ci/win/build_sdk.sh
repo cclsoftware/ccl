@@ -19,7 +19,3 @@ cmake --build . --config Debug --target sign_ccl_binaries
 echo "-- Build Installer"
 
 cpack -C "Debug;Release" --config SdkPackageConfig.cmake ${CPACK_OPTIONS}
-
-echo "-- Sign Installer"
-
-cmake --build . --config Release --target signed_sdkpackage

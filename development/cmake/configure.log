@@ -1,0 +1,390 @@
+-- Found Python3: C:/Program Files/WindowsApps/PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0/python3.13.exe (found version "3.13.14") found components: Interpreter
+-- Found zlib-ng: zlib-ng (found version "2.3.3")
+-- Found ZLIB: zlib-ng (found version "2.3.3")
+-- Found PNG: pnglib (found version "1.6.58")
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE
+-- Found corelib: corelib (found version "5.2.0")
+-- Found ccltools: crypt;package (found version "5.2.0") found components: crypt package
+-- Found ccl: cclbase (found version "5.2.0") found components: cclbase
+-- Found pcre: pcre (found version "10.47")
+CMake Warning (author) at C:/Program Files/CMake/share/cmake-4.5/Modules/ExternalProject.cmake:2688 (message):
+  Policy CMP0225 is not set: ExternalProject sets CMAKE_INSTALL_PREFIX to
+  <INSTALL_DIR> in the default configure command.  Run "cmake --help-policy
+  CMP0225" for policy details.  Use the cmake_policy command to set the
+  policy and suppress this warning.
+
+  ExternalProject_Add(expat-config) uses the default configure command
+  without a CMAKE_INSTALL_PREFIX.  The OLD behavior leaves the external
+  project's install prefix at the CMake default; the NEW behavior sets it to
+  <INSTALL_DIR>.
+Call Stack (most recent call first):
+  C:/Program Files/CMake/share/cmake-4.5/Modules/ExternalProject.cmake:2833 (_ep_extract_configure_command)
+  C:/Program Files/CMake/share/cmake-4.5/Modules/ExternalProject.cmake:3316 (_ep_add_configure_command)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:1539 (ExternalProject_Add)
+  A:/ccl-public/framework/build/cmake/modules/libs/Findexpat.cmake:7 (ccl_add_external_project)
+  A:/ccl-public/framework/ccl/cmake/ccltext.cmake:202 (find_package)
+  A:/ccl-public/framework/ccl/cmake/ccl-config.cmake:139 (include)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findccl.cmake:17 (include)
+  A:/ccl-public/applications/ccl-demo/cmake/CMakeLists.txt:37 (find_package)
+This warning is for project developers.  Use -Wno-author to suppress it.
+
+-- Performing Test HAVE_ARC4RANDOM_BUF
+-- Performing Test HAVE_ARC4RANDOM_BUF - Failed
+-- Performing Test HAVE_GETENTROPY
+-- Performing Test HAVE_GETENTROPY - Success
+-- Found expat: expat (found version "2.8.2")
+-- Found cares: cares_library (found version "1.34.8")
+-- Found webp: webp_library (found version "1.6.0")
+-- Found yoga: yoga_library (found version "3.2.1")
+-- Cache miss for skia/out/cmake_2_wasm_release_f9b1800d2644d602669bdf13343d9236. File does not exist: A:/ccl-public/.cache/ccl/skia/out/cmake_2_wasm_release_f9b1800d2644d602669bdf13343d9236/libskia.a
+-- Cache miss for skia/out/cmake_2_wasm_release_f9b1800d2644d602669bdf13343d9236. File does not exist: A:/ccl-public/.cache/ccl/skia/out/cmake_2_wasm_release_f9b1800d2644d602669bdf13343d9236/libskshaper.a
+-- Cache miss for skia/out/cmake_2_wasm_release_f9b1800d2644d602669bdf13343d9236. File does not exist: A:/ccl-public/.cache/ccl/skia/out/cmake_2_wasm_release_f9b1800d2644d602669bdf13343d9236/libskunicode_core.a
+-- Cache miss for skia/out/cmake_2_wasm_release_f9b1800d2644d602669bdf13343d9236. File does not exist: A:/ccl-public/.cache/ccl/skia/out/cmake_2_wasm_release_f9b1800d2644d602669bdf13343d9236/libskunicode_icu.a
+-- Cache miss for skia/out/cmake_2_wasm_release_f9b1800d2644d602669bdf13343d9236. File does not exist: A:/ccl-public/.cache/ccl/skia/out/cmake_2_wasm_release_f9b1800d2644d602669bdf13343d9236/libskparagraph.a
+CMake Warning at A:/ccl-public/framework/ccl/cmake/cclmacros.wasm.cmake:64 (message):
+  glslc not found.  3D shader support is disabled.
+Call Stack (most recent call first):
+  A:/ccl-public/framework/ccl/cmake/cclgui.wasm.cmake:110 (ccl_add_shader_resource)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:150 (include)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:360 (ccl_include_platform_specifics)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:430 (ccl_configure_target)
+  A:/ccl-public/framework/ccl/cmake/cclgui.cmake:785 (ccl_add_library)
+  A:/ccl-public/framework/ccl/cmake/ccl-config.cmake:139 (include)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findccl.cmake:17 (include)
+  A:/ccl-public/applications/ccl-demo/cmake/CMakeLists.txt:37 (find_package)
+
+
+CMake Warning at A:/ccl-public/framework/ccl/cmake/cclmacros.wasm.cmake:64 (message):
+  glslc not found.  3D shader support is disabled.
+Call Stack (most recent call first):
+  A:/ccl-public/framework/ccl/cmake/cclgui.wasm.cmake:111 (ccl_add_shader_resource)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:150 (include)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:360 (ccl_include_platform_specifics)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:430 (ccl_configure_target)
+  A:/ccl-public/framework/ccl/cmake/cclgui.cmake:785 (ccl_add_library)
+  A:/ccl-public/framework/ccl/cmake/ccl-config.cmake:139 (include)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findccl.cmake:17 (include)
+  A:/ccl-public/applications/ccl-demo/cmake/CMakeLists.txt:37 (find_package)
+
+
+CMake Warning at A:/ccl-public/framework/ccl/cmake/cclmacros.wasm.cmake:64 (message):
+  glslc not found.  3D shader support is disabled.
+Call Stack (most recent call first):
+  A:/ccl-public/framework/ccl/cmake/cclgui.wasm.cmake:112 (ccl_add_shader_resource)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:150 (include)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:360 (ccl_include_platform_specifics)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:430 (ccl_configure_target)
+  A:/ccl-public/framework/ccl/cmake/cclgui.cmake:785 (ccl_add_library)
+  A:/ccl-public/framework/ccl/cmake/ccl-config.cmake:139 (include)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findccl.cmake:17 (include)
+  A:/ccl-public/applications/ccl-demo/cmake/CMakeLists.txt:37 (find_package)
+
+
+CMake Warning at A:/ccl-public/framework/ccl/cmake/cclmacros.wasm.cmake:64 (message):
+  glslc not found.  3D shader support is disabled.
+Call Stack (most recent call first):
+  A:/ccl-public/framework/ccl/cmake/cclgui.wasm.cmake:113 (ccl_add_shader_resource)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:150 (include)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:360 (ccl_include_platform_specifics)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:430 (ccl_configure_target)
+  A:/ccl-public/framework/ccl/cmake/cclgui.cmake:785 (ccl_add_library)
+  A:/ccl-public/framework/ccl/cmake/ccl-config.cmake:139 (include)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findccl.cmake:17 (include)
+  A:/ccl-public/applications/ccl-demo/cmake/CMakeLists.txt:37 (find_package)
+
+
+CMake Warning at A:/ccl-public/framework/ccl/cmake/cclmacros.wasm.cmake:64 (message):
+  glslc not found.  3D shader support is disabled.
+Call Stack (most recent call first):
+  A:/ccl-public/framework/ccl/cmake/cclgui.wasm.cmake:114 (ccl_add_shader_resource)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:150 (include)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:360 (ccl_include_platform_specifics)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:430 (ccl_configure_target)
+  A:/ccl-public/framework/ccl/cmake/cclgui.cmake:785 (ccl_add_library)
+  A:/ccl-public/framework/ccl/cmake/ccl-config.cmake:139 (include)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findccl.cmake:17 (include)
+  A:/ccl-public/applications/ccl-demo/cmake/CMakeLists.txt:37 (find_package)
+
+
+CMake Warning at A:/ccl-public/framework/ccl/cmake/cclmacros.wasm.cmake:64 (message):
+  glslc not found.  3D shader support is disabled.
+Call Stack (most recent call first):
+  A:/ccl-public/framework/ccl/cmake/cclgui.wasm.cmake:115 (ccl_add_shader_resource)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:150 (include)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:360 (ccl_include_platform_specifics)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:430 (ccl_configure_target)
+  A:/ccl-public/framework/ccl/cmake/cclgui.cmake:785 (ccl_add_library)
+  A:/ccl-public/framework/ccl/cmake/ccl-config.cmake:139 (include)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findccl.cmake:17 (include)
+  A:/ccl-public/applications/ccl-demo/cmake/CMakeLists.txt:37 (find_package)
+
+
+-- Cache miss for webfonts. File does not exist: A:/ccl-public/.cache/ccl/webfonts/ccl-web-fonts-v1.0.zip
+-- Caching webfonts as A:/ccl-public/development/cmake/build/ccldemo/assets/webfonts/ccl-web-fonts-v1.0.zip at A:/ccl-public/.cache/ccl/webfonts
+-- CMake version 4.5.0-rc1
+-- Compiler: A:/emsdk/upstream/emscripten/em++.bat
+-- Compiler options:  
+-- Compiler definitions: 
+-- Build type: Release
+-- Found cryptlib: cryptlib (found version "8.9.0")
+CMake Warning at A:/ccl-public/framework/ccl/cmake/cclmacros.wasm.cmake:64 (message):
+  glslc not found.  3D shader support is disabled.
+Call Stack (most recent call first):
+  A:/ccl-public/framework/ccl/cmake/cclgui.wasm.cmake:110 (ccl_add_shader_resource)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:150 (include)
+  A:/ccl-public/framework/ccl/cmake/cclgui.cmake:839 (ccl_include_platform_specifics)
+  A:/ccl-public/framework/ccl/cmake/ccl-config.cmake:139 (include)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findccl.cmake:17 (include)
+  A:/ccl-public/framework/services/audio/cmake/audioservice-config.cmake:23 (find_package)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findaudioservice.cmake:8 (include)
+  A:/ccl-public/applications/ccl-demo/cmake/CMakeLists.txt:38 (find_package)
+
+
+CMake Warning at A:/ccl-public/framework/ccl/cmake/cclmacros.wasm.cmake:64 (message):
+  glslc not found.  3D shader support is disabled.
+Call Stack (most recent call first):
+  A:/ccl-public/framework/ccl/cmake/cclgui.wasm.cmake:111 (ccl_add_shader_resource)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:150 (include)
+  A:/ccl-public/framework/ccl/cmake/cclgui.cmake:839 (ccl_include_platform_specifics)
+  A:/ccl-public/framework/ccl/cmake/ccl-config.cmake:139 (include)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findccl.cmake:17 (include)
+  A:/ccl-public/framework/services/audio/cmake/audioservice-config.cmake:23 (find_package)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findaudioservice.cmake:8 (include)
+  A:/ccl-public/applications/ccl-demo/cmake/CMakeLists.txt:38 (find_package)
+
+
+CMake Warning at A:/ccl-public/framework/ccl/cmake/cclmacros.wasm.cmake:64 (message):
+  glslc not found.  3D shader support is disabled.
+Call Stack (most recent call first):
+  A:/ccl-public/framework/ccl/cmake/cclgui.wasm.cmake:112 (ccl_add_shader_resource)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:150 (include)
+  A:/ccl-public/framework/ccl/cmake/cclgui.cmake:839 (ccl_include_platform_specifics)
+  A:/ccl-public/framework/ccl/cmake/ccl-config.cmake:139 (include)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findccl.cmake:17 (include)
+  A:/ccl-public/framework/services/audio/cmake/audioservice-config.cmake:23 (find_package)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findaudioservice.cmake:8 (include)
+  A:/ccl-public/applications/ccl-demo/cmake/CMakeLists.txt:38 (find_package)
+
+
+CMake Warning at A:/ccl-public/framework/ccl/cmake/cclmacros.wasm.cmake:64 (message):
+  glslc not found.  3D shader support is disabled.
+Call Stack (most recent call first):
+  A:/ccl-public/framework/ccl/cmake/cclgui.wasm.cmake:113 (ccl_add_shader_resource)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:150 (include)
+  A:/ccl-public/framework/ccl/cmake/cclgui.cmake:839 (ccl_include_platform_specifics)
+  A:/ccl-public/framework/ccl/cmake/ccl-config.cmake:139 (include)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findccl.cmake:17 (include)
+  A:/ccl-public/framework/services/audio/cmake/audioservice-config.cmake:23 (find_package)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findaudioservice.cmake:8 (include)
+  A:/ccl-public/applications/ccl-demo/cmake/CMakeLists.txt:38 (find_package)
+
+
+CMake Warning at A:/ccl-public/framework/ccl/cmake/cclmacros.wasm.cmake:64 (message):
+  glslc not found.  3D shader support is disabled.
+Call Stack (most recent call first):
+  A:/ccl-public/framework/ccl/cmake/cclgui.wasm.cmake:114 (ccl_add_shader_resource)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:150 (include)
+  A:/ccl-public/framework/ccl/cmake/cclgui.cmake:839 (ccl_include_platform_specifics)
+  A:/ccl-public/framework/ccl/cmake/ccl-config.cmake:139 (include)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findccl.cmake:17 (include)
+  A:/ccl-public/framework/services/audio/cmake/audioservice-config.cmake:23 (find_package)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findaudioservice.cmake:8 (include)
+  A:/ccl-public/applications/ccl-demo/cmake/CMakeLists.txt:38 (find_package)
+
+
+CMake Warning at A:/ccl-public/framework/ccl/cmake/cclmacros.wasm.cmake:64 (message):
+  glslc not found.  3D shader support is disabled.
+Call Stack (most recent call first):
+  A:/ccl-public/framework/ccl/cmake/cclgui.wasm.cmake:115 (ccl_add_shader_resource)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:150 (include)
+  A:/ccl-public/framework/ccl/cmake/cclgui.cmake:839 (ccl_include_platform_specifics)
+  A:/ccl-public/framework/ccl/cmake/ccl-config.cmake:139 (include)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findccl.cmake:17 (include)
+  A:/ccl-public/framework/services/audio/cmake/audioservice-config.cmake:23 (find_package)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findaudioservice.cmake:8 (include)
+  A:/ccl-public/applications/ccl-demo/cmake/CMakeLists.txt:38 (find_package)
+
+
+-- Found miniaudio: miniaudio (found version "0.11.25")
+CMake Warning at A:/ccl-public/framework/ccl/cmake/cclmacros.wasm.cmake:64 (message):
+  glslc not found.  3D shader support is disabled.
+Call Stack (most recent call first):
+  A:/ccl-public/framework/ccl/cmake/cclgui.wasm.cmake:110 (ccl_add_shader_resource)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:150 (include)
+  A:/ccl-public/framework/ccl/cmake/cclgui.cmake:839 (ccl_include_platform_specifics)
+  A:/ccl-public/framework/ccl/cmake/ccl-config.cmake:139 (include)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findccl.cmake:17 (include)
+  A:/ccl-public/framework/services/model3d/cmake/modelimporter3d-config.cmake:21 (find_package)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findmodelimporter3d.cmake:8 (include)
+  A:/ccl-public/applications/ccl-demo/cmake/CMakeLists.txt:39 (find_package)
+
+
+CMake Warning at A:/ccl-public/framework/ccl/cmake/cclmacros.wasm.cmake:64 (message):
+  glslc not found.  3D shader support is disabled.
+Call Stack (most recent call first):
+  A:/ccl-public/framework/ccl/cmake/cclgui.wasm.cmake:111 (ccl_add_shader_resource)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:150 (include)
+  A:/ccl-public/framework/ccl/cmake/cclgui.cmake:839 (ccl_include_platform_specifics)
+  A:/ccl-public/framework/ccl/cmake/ccl-config.cmake:139 (include)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findccl.cmake:17 (include)
+  A:/ccl-public/framework/services/model3d/cmake/modelimporter3d-config.cmake:21 (find_package)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findmodelimporter3d.cmake:8 (include)
+  A:/ccl-public/applications/ccl-demo/cmake/CMakeLists.txt:39 (find_package)
+
+
+CMake Warning at A:/ccl-public/framework/ccl/cmake/cclmacros.wasm.cmake:64 (message):
+  glslc not found.  3D shader support is disabled.
+Call Stack (most recent call first):
+  A:/ccl-public/framework/ccl/cmake/cclgui.wasm.cmake:112 (ccl_add_shader_resource)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:150 (include)
+  A:/ccl-public/framework/ccl/cmake/cclgui.cmake:839 (ccl_include_platform_specifics)
+  A:/ccl-public/framework/ccl/cmake/ccl-config.cmake:139 (include)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findccl.cmake:17 (include)
+  A:/ccl-public/framework/services/model3d/cmake/modelimporter3d-config.cmake:21 (find_package)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findmodelimporter3d.cmake:8 (include)
+  A:/ccl-public/applications/ccl-demo/cmake/CMakeLists.txt:39 (find_package)
+
+
+CMake Warning at A:/ccl-public/framework/ccl/cmake/cclmacros.wasm.cmake:64 (message):
+  glslc not found.  3D shader support is disabled.
+Call Stack (most recent call first):
+  A:/ccl-public/framework/ccl/cmake/cclgui.wasm.cmake:113 (ccl_add_shader_resource)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:150 (include)
+  A:/ccl-public/framework/ccl/cmake/cclgui.cmake:839 (ccl_include_platform_specifics)
+  A:/ccl-public/framework/ccl/cmake/ccl-config.cmake:139 (include)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findccl.cmake:17 (include)
+  A:/ccl-public/framework/services/model3d/cmake/modelimporter3d-config.cmake:21 (find_package)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findmodelimporter3d.cmake:8 (include)
+  A:/ccl-public/applications/ccl-demo/cmake/CMakeLists.txt:39 (find_package)
+
+
+CMake Warning at A:/ccl-public/framework/ccl/cmake/cclmacros.wasm.cmake:64 (message):
+  glslc not found.  3D shader support is disabled.
+Call Stack (most recent call first):
+  A:/ccl-public/framework/ccl/cmake/cclgui.wasm.cmake:114 (ccl_add_shader_resource)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:150 (include)
+  A:/ccl-public/framework/ccl/cmake/cclgui.cmake:839 (ccl_include_platform_specifics)
+  A:/ccl-public/framework/ccl/cmake/ccl-config.cmake:139 (include)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findccl.cmake:17 (include)
+  A:/ccl-public/framework/services/model3d/cmake/modelimporter3d-config.cmake:21 (find_package)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findmodelimporter3d.cmake:8 (include)
+  A:/ccl-public/applications/ccl-demo/cmake/CMakeLists.txt:39 (find_package)
+
+
+CMake Warning at A:/ccl-public/framework/ccl/cmake/cclmacros.wasm.cmake:64 (message):
+  glslc not found.  3D shader support is disabled.
+Call Stack (most recent call first):
+  A:/ccl-public/framework/ccl/cmake/cclgui.wasm.cmake:115 (ccl_add_shader_resource)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:150 (include)
+  A:/ccl-public/framework/ccl/cmake/cclgui.cmake:839 (ccl_include_platform_specifics)
+  A:/ccl-public/framework/ccl/cmake/ccl-config.cmake:139 (include)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findccl.cmake:17 (include)
+  A:/ccl-public/framework/services/model3d/cmake/modelimporter3d-config.cmake:21 (find_package)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findmodelimporter3d.cmake:8 (include)
+  A:/ccl-public/applications/ccl-demo/cmake/CMakeLists.txt:39 (find_package)
+
+
+-- Found assimp: assimp_library (found version "6.0.5")
+CMake Warning at A:/ccl-public/framework/ccl/cmake/cclmacros.wasm.cmake:64 (message):
+  glslc not found.  3D shader support is disabled.
+Call Stack (most recent call first):
+  A:/ccl-public/framework/ccl/cmake/cclgui.wasm.cmake:110 (ccl_add_shader_resource)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:150 (include)
+  A:/ccl-public/framework/ccl/cmake/cclgui.cmake:839 (ccl_include_platform_specifics)
+  A:/ccl-public/framework/ccl/cmake/ccl-config.cmake:139 (include)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findccl.cmake:17 (include)
+  A:/ccl-public/framework/services/cclspy/cmake/cclspy-config.cmake:21 (find_package)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findcclspy.cmake:12 (include)
+  A:/ccl-public/applications/ccl-demo/cmake/CMakeLists.txt:42 (find_package)
+
+
+CMake Warning at A:/ccl-public/framework/ccl/cmake/cclmacros.wasm.cmake:64 (message):
+  glslc not found.  3D shader support is disabled.
+Call Stack (most recent call first):
+  A:/ccl-public/framework/ccl/cmake/cclgui.wasm.cmake:111 (ccl_add_shader_resource)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:150 (include)
+  A:/ccl-public/framework/ccl/cmake/cclgui.cmake:839 (ccl_include_platform_specifics)
+  A:/ccl-public/framework/ccl/cmake/ccl-config.cmake:139 (include)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findccl.cmake:17 (include)
+  A:/ccl-public/framework/services/cclspy/cmake/cclspy-config.cmake:21 (find_package)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findcclspy.cmake:12 (include)
+  A:/ccl-public/applications/ccl-demo/cmake/CMakeLists.txt:42 (find_package)
+
+
+CMake Warning at A:/ccl-public/framework/ccl/cmake/cclmacros.wasm.cmake:64 (message):
+  glslc not found.  3D shader support is disabled.
+Call Stack (most recent call first):
+  A:/ccl-public/framework/ccl/cmake/cclgui.wasm.cmake:112 (ccl_add_shader_resource)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:150 (include)
+  A:/ccl-public/framework/ccl/cmake/cclgui.cmake:839 (ccl_include_platform_specifics)
+  A:/ccl-public/framework/ccl/cmake/ccl-config.cmake:139 (include)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findccl.cmake:17 (include)
+  A:/ccl-public/framework/services/cclspy/cmake/cclspy-config.cmake:21 (find_package)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findcclspy.cmake:12 (include)
+  A:/ccl-public/applications/ccl-demo/cmake/CMakeLists.txt:42 (find_package)
+
+
+CMake Warning at A:/ccl-public/framework/ccl/cmake/cclmacros.wasm.cmake:64 (message):
+  glslc not found.  3D shader support is disabled.
+Call Stack (most recent call first):
+  A:/ccl-public/framework/ccl/cmake/cclgui.wasm.cmake:113 (ccl_add_shader_resource)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:150 (include)
+  A:/ccl-public/framework/ccl/cmake/cclgui.cmake:839 (ccl_include_platform_specifics)
+  A:/ccl-public/framework/ccl/cmake/ccl-config.cmake:139 (include)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findccl.cmake:17 (include)
+  A:/ccl-public/framework/services/cclspy/cmake/cclspy-config.cmake:21 (find_package)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findcclspy.cmake:12 (include)
+  A:/ccl-public/applications/ccl-demo/cmake/CMakeLists.txt:42 (find_package)
+
+
+CMake Warning at A:/ccl-public/framework/ccl/cmake/cclmacros.wasm.cmake:64 (message):
+  glslc not found.  3D shader support is disabled.
+Call Stack (most recent call first):
+  A:/ccl-public/framework/ccl/cmake/cclgui.wasm.cmake:114 (ccl_add_shader_resource)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:150 (include)
+  A:/ccl-public/framework/ccl/cmake/cclgui.cmake:839 (ccl_include_platform_specifics)
+  A:/ccl-public/framework/ccl/cmake/ccl-config.cmake:139 (include)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findccl.cmake:17 (include)
+  A:/ccl-public/framework/services/cclspy/cmake/cclspy-config.cmake:21 (find_package)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findcclspy.cmake:12 (include)
+  A:/ccl-public/applications/ccl-demo/cmake/CMakeLists.txt:42 (find_package)
+
+
+CMake Warning at A:/ccl-public/framework/ccl/cmake/cclmacros.wasm.cmake:64 (message):
+  glslc not found.  3D shader support is disabled.
+Call Stack (most recent call first):
+  A:/ccl-public/framework/ccl/cmake/cclgui.wasm.cmake:115 (ccl_add_shader_resource)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:150 (include)
+  A:/ccl-public/framework/ccl/cmake/cclgui.cmake:839 (ccl_include_platform_specifics)
+  A:/ccl-public/framework/ccl/cmake/ccl-config.cmake:139 (include)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findccl.cmake:17 (include)
+  A:/ccl-public/framework/services/cclspy/cmake/cclspy-config.cmake:21 (find_package)
+  A:/ccl-public/framework/build/cmake/modules/ccl/Findcclspy.cmake:12 (include)
+  A:/ccl-public/applications/ccl-demo/cmake/CMakeLists.txt:42 (find_package)
+
+
+CMake Warning at A:/ccl-public/framework/ccl/cmake/cclmacros.wasm.cmake:64 (message):
+  glslc not found.  3D shader support is disabled.
+Call Stack (most recent call first):
+  A:/ccl-public/applications/ccl-demo/cmake/ccldemo.wasm.cmake:7 (ccl_add_shader_resource)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:150 (include)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:362 (ccl_include_platform_specifics)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:527 (ccl_configure_target)
+  A:/ccl-public/applications/ccl-demo/cmake/CMakeLists.txt:51 (ccl_add_app)
+
+
+CMake Warning at A:/ccl-public/framework/ccl/cmake/cclmacros.wasm.cmake:64 (message):
+  glslc not found.  3D shader support is disabled.
+Call Stack (most recent call first):
+  A:/ccl-public/applications/ccl-demo/cmake/ccldemo.wasm.cmake:8 (ccl_add_shader_resource)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:150 (include)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:362 (ccl_include_platform_specifics)
+  A:/ccl-public/framework/core/cmake/coremacros.cmake:527 (ccl_configure_target)
+  A:/ccl-public/applications/ccl-demo/cmake/CMakeLists.txt:51 (ccl_add_app)
+
+
+-- Configuring done (44.7s)
+-- Generating done (0.7s)
+-- Build files have been written to: A:/ccl-public/development/cmake/build/ccldemo

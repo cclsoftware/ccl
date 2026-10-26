@@ -27,6 +27,15 @@ jobs:
           - host: ubuntu-latest
             image: ccl-linux-sdk:22.04
             targetos: linux
+            label: ubuntu-22.04
+          - host: ubuntu-latest
+            image: ccl-linux-sdk:24.04
+            targetos: linux
+            label: ubuntu-24.04
+          - host: ubuntu-latest
+            image: ccl-linux-sdk:26.04
+            targetos: linux
+            label: ubuntu-26.04
             
     runs-on: ${{matrix.host}}
     
@@ -119,7 +128,7 @@ jobs:
       - name: Archive artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ccl-sdk-${{matrix.targetos}}
+          name: ccl-sdk-${{matrix.label}}
           path: |
             build/cmake/archive/*.gz
             build/cmake/archive/*.sh

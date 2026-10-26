@@ -1,0 +1,69 @@
+name: CCL Applications for WebAssembly
+
+concurrency:
+  group: ccl-applications-wasm
+
+on:
+  workflow_call:
+    inputs:
+      buildDemo:
+        description: 'Build CCL Demo'
+        type: boolean
+        required: true
+        default: true
+
+jobs:
+  build:
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - host: ubuntu-latest
+            image: ccl-wasm:26.04
+            targetos: wasm
+
+    runs-on: ${{matrix.host}}
+
+    permissions:
+      contents: read
+      packages: read
+
+    container:
+      image: ghcr.io/cclsoftware/${{matrix.image}}
+      credentials:
+        username: ${{github.actor}}
+        password: ${{secrets.GITHUB_TOKEN}}
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          submodules: recursive
+
+      - name: Prepare build environment
+        uses: ./.github/ci/linux/prepare-build-environment
+        with:
+          targetos: ${{ matrix.targetos }}
+
+      - name: Build CCL Demo
+        if: inputs.buildDemo
+        shell: bash
+        run: |
+          export CMAKE_BUILD_OPTIONS="${CMAKE_BUILD_OPTIONS:-} -DBUILD_ccldemo=ON"
+          source ${GITHUB_WORKSPACE}/.github/ci/linux/configure_cmake_project.sh
+          cd ${BUILD_DIR}
+          source ${GITHUB_WORKSPACE}/.github/ci/linux/build_cmake_target.sh
+        env:
+          BUILD_DIR: "build/ccldemo"
+          BUILD_CONFIG: Release
+          CPACK_TARGET: package
+          CMAKE_PRESET: wasm-release
+
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ccl-applications-${{matrix.targetos}}
+          path: |
+            build/cmake/archive/*.zip

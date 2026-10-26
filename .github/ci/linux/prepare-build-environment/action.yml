@@ -39,7 +39,7 @@ runs:
         .github/ci/shared/prepare_workingcopy.sh ${{github.run_number}}
       
     - name: Build CCL tools
-      if: ${{ inputs.targetos == 'linux' }}
+      if: ${{ inputs.targetos == 'linux' || inputs.targetos == 'wasm' }}
       shell: bash
       run: |
         echo "-- Test if CCL tools are executable"

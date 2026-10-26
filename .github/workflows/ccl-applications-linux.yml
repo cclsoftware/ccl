@@ -32,6 +32,15 @@ jobs:
           - host: ubuntu-latest
             image: ccl-linux-base:22.04
             targetos: linux
+            label: ubuntu-22.04
+          - host: ubuntu-latest
+            image: ccl-linux-base:24.04
+            targetos: linux
+            label: ubuntu-24.04
+          - host: ubuntu-latest
+            image: ccl-linux-base:26.04
+            targetos: linux
+            label: ubuntu-26.04
     
     runs-on: ${{matrix.host}}
     
@@ -86,7 +95,7 @@ jobs:
           CMAKE_PRESET: linux-release
           
       - name: Build CCL Skin Editor
-        if: inputs.buildDemo
+        if: inputs.buildSkinEditor
         shell: bash
         run: |
           export CMAKE_BUILD_OPTIONS="${CMAKE_BUILD_OPTIONS:-} -DBUILD_skineditor=ON"
@@ -102,6 +111,6 @@ jobs:
       - name: Archive artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ccl-applications-${{matrix.targetos}}
+          name: ccl-applications-${{matrix.label}}
           path: |
             build/cmake/archive/*.deb

@@ -35,7 +35,12 @@ on:
         type: boolean
         required: true
         default: true
-        
+      buildWasm:
+        description: 'Build for WebAssembly'
+        type: boolean
+        required: true
+        default: true
+
       buildDemo:
         description: 'Build CCL Demo'
         type: boolean
@@ -97,6 +102,16 @@ jobs:
   build-android-applications:
     if: ${{ inputs.buildAndroid }}
     uses: ./.github/workflows/ccl-applications-android.yml
+    with:
+      buildDemo: ${{ inputs.buildDemo }}
+    permissions:
+      contents: read
+      packages: read
+    secrets: inherit
+
+  build-wasm-applications:
+    if: ${{ inputs.buildWasm }}
+    uses: ./.github/workflows/ccl-applications-wasm.yml
     with:
       buildDemo: ${{ inputs.buildDemo }}
     permissions:

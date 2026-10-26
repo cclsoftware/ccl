@@ -92,7 +92,7 @@ jobs:
           signsecret: ${{ secrets.SIGNING_AZURE_SECRET_WIN }}
           dockerargs: |
             -e BUILD_REVISION="${{ github.run_number }}" \
-            -e BUILD_DIR="build/ccldemo" \
+            -e BUILD_DIR="build/localizer" \
             -e CMAKE_BUILD_OPTIONS="-DBUILD_localizer=ON" \
             -e CMAKE_PRESET="${{ matrix.preset }}" \
             -e CPACK_TARGET="localizerapp_installer" \
@@ -111,7 +111,7 @@ jobs:
           signsecret: ${{ secrets.SIGNING_AZURE_SECRET_WIN }}
           dockerargs: |
             -e BUILD_REVISION="${{ github.run_number }}" \
-            -e BUILD_DIR="build/ccldemo" \
+            -e BUILD_DIR="build/skineditor" \
             -e CMAKE_BUILD_OPTIONS="-DBUILD_skineditor=ON" \
             -e CMAKE_PRESET="${{ matrix.preset }}" \
             -e CPACK_TARGET="skineditor_installer" \

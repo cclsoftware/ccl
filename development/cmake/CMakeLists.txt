@@ -42,9 +42,9 @@ if (BUILD_sdk)
 	find_package (corelib REQUIRED COMPONENTS corelib coreextras-extensions coreextras-games coreextras-web)
 	find_package (ccl REQUIRED COMPONENTS
 		cclbase ccltext cclapp cclsystem cclsecurity cclnet cclgui
-		cclextras-analytics cclextras-devices cclextras-extensions
+		cclextras-audio cclextras-analytics cclextras-devices cclextras-extensions
 		cclextras-firebase cclextras-gadgets cclextras-packages cclextras-portable
-		cclextras-stores cclextras-tools cclextras-web cclextras-webfs
+		cclextras-stores cclextras-tools cclextras-web cclextras-webfs cclextras-modeling
 	)
 
 	if (UNIX AND NOT APPLE)
@@ -134,6 +134,7 @@ if (BUILD_services)
 		find_package (cclspy)
 		find_package (sqlite)
 	endif ()
+	find_package (audioservice)
 	find_package (bluetoothservice)
 	find_package (dapservice)
 	find_package (jsengine)
@@ -261,7 +262,6 @@ if (BUILD_sdk)
 		install (FILES
 			${CCL_ANDROID_SDK_DIR}/cmake/cclapp.android.cmake
 			${CCL_ANDROID_SDK_DIR}/cmake/cclbase.android.cmake
-			${CCL_ANDROID_SDK_DIR}/cmake/cclextras-stores.android.cmake
 			${CCL_ANDROID_SDK_DIR}/cmake/cclgui.android.cmake
 			${CCL_ANDROID_SDK_DIR}/cmake/cclmacros.android.cmake
 			${CCL_ANDROID_SDK_DIR}/cmake/cclnet.android.cmake
@@ -274,6 +274,20 @@ if (BUILD_sdk)
 			COMPONENT prebuilt_libraries_android_java
 		)
 
+		foreach (module extensions games web)
+			install (FILES ${CCL_ANDROID_SDK_DIR}/cmake/coreextras-${module}.android.cmake
+				DESTINATION "${CCL_CMAKE_EXPORT_DESTINATION}"
+				COMPONENT prebuilt_libraries_android_java
+			)
+		endforeach ()
+
+		foreach (module analytics audio devices extensions firebase gadgets modeling packages portable stores tools web webfs)
+			install (FILES ${CCL_ANDROID_SDK_DIR}/cmake/cclextras-${module}.android.cmake
+				DESTINATION "${CCL_CMAKE_EXPORT_DESTINATION}"
+				COMPONENT prebuilt_libraries_android_java
+			)
+		endforeach ()
+
 		set (android_library_prefix "${android_library_destination}/android")
 		cmake_path (NORMAL_PATH android_library_prefix)
 		install (DIRECTORY ${CCL_ANDROID_SDK_DIR}/lib/android-armv7/Plugins DESTINATION "${android_library_prefix}-armv7" COMPONENT services_android_arm)
@@ -282,6 +296,7 @@ if (BUILD_sdk)
 		install (DIRECTORY ${CCL_ANDROID_SDK_DIR}/lib/android-x86_64/Plugins DESTINATION "${android_library_prefix}-x86_64" COMPONENT services_android_x64)
 
 		install (FILES
+			${CCL_ANDROID_SDK_DIR}/cmake/audioservice.android.cmake
 			${CCL_ANDROID_SDK_DIR}/cmake/bluetoothservice.android.cmake
 			${CCL_ANDROID_SDK_DIR}/cmake/dapservice.android.cmake
 			${CCL_ANDROID_SDK_DIR}/cmake/jsengine.android.cmake
@@ -297,8 +312,4 @@ if (BUILD_sdk)
 	include (CPack)
 	add_custom_target (sdkpackage COMMAND "${CMAKE_CPACK_COMMAND}" "-C" "$<CONFIGURATION>" "--config" "${CMAKE_BINARY_DIR}/SdkPackageConfig.cmake")
 	set_target_properties (sdkpackage PROPERTIES USE_FOLDERS ON FOLDER "cmake")
-
-	if (WIN32)
-		ccl_sign_files (signed_sdkpackage "${PROJECT_VENDOR}" "${CPACK_PACKAGE_DIRECTORY}/*.exe")
-	endif ()
 endif ()
